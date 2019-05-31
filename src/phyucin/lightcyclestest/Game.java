@@ -15,7 +15,7 @@ public class Game implements Runnable {
     public void run() {
 
         // Top-level frame
-        final JFrame frame = new JFrame("Light Cycles");
+        final JFrame frame = new JFrame("LightCycles");
         frame.setBackground(Color.BLACK);
         frame.setPreferredSize(new Dimension(500,560));
         frame.setLocation(400, 100);
@@ -26,11 +26,31 @@ public class Game implements Runnable {
          *  Main Menu
          *
          */
+
+        // outside panel
+        final JPanel outside = new JPanel();
+        outside.setLayout(new BorderLayout());
+        outside.setBackground(Color.BLACK);
+
+
+        JPanel north = new JPanel();
+        JPanel south = new JPanel();
+        JPanel east = new JPanel();
+        JPanel west = new JPanel();
+
+        JLabel title = new JLabel();
+
         // main menu panel
         final JPanel mainMenu = new JPanel();
-        mainMenu.setLayout(new BorderLayout());
+        mainMenu.setLayout(new GridLayout(3,1, 10, 10));
         mainMenu.setBackground(Color.BLACK);
-        mainMenu.setLayout(new GridLayout(2,1));
+
+        mainMenu.add(title);
+        title.setText("LightCycles!");
+        title.setBackground(Color.BLACK);
+        title.setForeground(Color.WHITE);
+        title.setFont(new Font("Arial", Font.PLAIN, 50));
+        title.setHorizontalAlignment(JLabel.CENTER);
 
         // buttons for main menu
         final JButton play = new JButton("Play");
@@ -39,57 +59,40 @@ public class Game implements Runnable {
         final JButton quit = new JButton("Quit");
         mainMenu.add(quit);
 
+        outside.add(mainMenu, BorderLayout.CENTER);
+        outside.add(west, BorderLayout.WEST);
+        outside.add(south, BorderLayout.SOUTH);
+        outside.add(east, BorderLayout.EAST);
+        outside.add(north, BorderLayout.NORTH);
+
+
+
+        north.setBackground(Color.BLACK);
+        south.setBackground(Color.BLACK);
+        east.setBackground(Color.BLACK);
+        west.setBackground(Color.BLACK);
+
+
+
+        west.setPreferredSize(new Dimension(100, 200));
+        south.setPreferredSize(new Dimension(200, 200));
+        east.setPreferredSize(new Dimension(100, 200));
+        north.setPreferredSize(new Dimension(200, 100));
 
         // adds main menu panel to the frame
-        frame.add(mainMenu);
+        frame.add(outside);
 
 
-        // play menu panel that replaces the main menu panel
-        final JPanel playMenu = new JPanel();
-        playMenu.setLayout(new BorderLayout());
-        playMenu.setBackground(Color.BLACK);
 
+        // two players
 
-        // panel that displays an image or high scores and game type buttons
-        final JPanel playMenuUpper = new JPanel();
-        playMenuUpper.setLayout(new GridLayout(2, 1));
-        playMenuUpper.setBackground(Color.BLACK);
-
-        // panel that holds the buttons for each game type
-        final JPanel modes = new JPanel();
-        modes.setLayout(new GridLayout(1,3));
-        modes.setBackground(Color.BLACK);
-
-        // buttons for playMenuUpper
-        final JButton twoPlayer = new JButton("Two Player");
-        modes.add(twoPlayer);
-
-        // adds panels to playMenuUpper
-        playMenuUpper.add(modes);
-
-        // panel that hold high score and main menu buttons
-        final JPanel bottomMenu = new JPanel();
-        bottomMenu.setBackground(Color.BLACK);
-
-        final JButton back = new JButton("Main Menu");
-        bottomMenu.add(back);
-
-        // adds bottomMenu and playMenuUpper to playMenu
-        playMenu.add(playMenuUpper, BorderLayout.CENTER);
-        playMenu.add(bottomMenu, BorderLayout.SOUTH);
-
-        /**
-         *
-         *  Two-player Level Menu
-         *
-         */
         // panel that holds the buttons and labels for two-player mode
         final JPanel twoMenu = new JPanel();
         twoMenu.setLayout(new GridLayout(1,2));
         twoMenu.setBackground(Color.BLACK);
 
         final JPanel bottomGameMenu = new JPanel();
-        twoMenu.setLayout(new GridLayout(1,2));
+        bottomGameMenu.setLayout(new GridLayout(1,2));
         twoMenu.setBackground(Color.BLACK);
 
 
@@ -114,14 +117,10 @@ public class Game implements Runnable {
                 new TwoPlayerMap(scoreTwo1, scoreTwo2, 2);
         levelTwoPlayer.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
-        /**
-         *
-         *  Adding action listeners
-         *
-         */
+        // action listeners
         play.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                frame.remove(mainMenu);
+                frame.remove(outside);
                 frame.setLayout(new BorderLayout());
                 frame.add(levelTwoPlayer, BorderLayout.CENTER);
                 frame.add(twoMenu, BorderLayout.NORTH);
@@ -152,9 +151,9 @@ public class Game implements Runnable {
                 frame.remove(levelTwoPlayer);
                 frame.remove(twoMenu);
                 frame.remove(bottomGameMenu);
-                frame.add(mainMenu);
+                frame.add(outside);
                 frame.update(frame.getGraphics());
-                mainMenu.revalidate();
+                outside.revalidate();
                 levelTwoPlayer.restartGame();
             }
         });

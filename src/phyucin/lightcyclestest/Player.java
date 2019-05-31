@@ -20,8 +20,8 @@ public class Player extends LightCycle {
     int startVel = 0;
 
     // static values to be used by all Player objects
-    static int WIDTH = 5;
-    static int HEIGHT = 5;
+    static int WIDTH = 2;
+    static int HEIGHT = 2;
 
     // Player object's path
     ArrayList<Shape> lines = new ArrayList<Shape>();
