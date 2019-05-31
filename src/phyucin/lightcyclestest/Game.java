@@ -1,11 +1,17 @@
 package phyucin.lightcyclestest;
 
-import java.awt.*;
-import java.awt.event.*;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class Game implements Runnable {
+public class Game extends Component implements Runnable {
+    private String gameRequest = "LightCycles game request to start";
+
+    // Client Server
+    private GameClient socketClient;
+    private GameServer socketServer;
 
     // true if the instructions page is in the frame
     private boolean instructOn = false;
@@ -13,6 +19,16 @@ public class Game implements Runnable {
     private boolean scoresOn = false;
 
     public void run() {
+        //if want to run server
+        if (JOptionPane.showConfirmDialog(this, "Do you want to run the server") == 0){
+            socketServer = new GameServer(this);
+            socketServer.start();
+        }
+        socketClient = new GameClient(this, "localhost");
+        socketClient.start();
+
+        socketClient.sendData(gameRequest.getBytes());
+
 
         // Top-level frame
         final JFrame frame = new JFrame("LightCycles");
